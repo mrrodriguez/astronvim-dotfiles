@@ -58,6 +58,65 @@ return {
           desc = "Close buffer from tabline",
         },
 
+        -- Copy file paths to clipboard
+        ["<Leader>yp"] = {
+          function()
+            local filepath = vim.api.nvim_buf_get_name(0)
+            if filepath == "" then
+              vim.notify("Buffer has no file path", vim.log.levels.WARN)
+              return
+            end
+            filepath = vim.fn.fnamemodify(filepath, ":p")
+            vim.fn.setreg("+", filepath)
+            vim.notify("Copied: " .. filepath, vim.log.levels.INFO)
+          end,
+          desc = "Copy absolute file path",
+        },
+        ["<Leader>yr"] = {
+          function()
+            local filepath = vim.api.nvim_buf_get_name(0)
+            if filepath == "" then
+              vim.notify("Buffer has no file path", vim.log.levels.WARN)
+              return
+            end
+            filepath = vim.fn.fnamemodify(filepath, ":p")
+
+            local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+            if vim.v.shell_error ~= 0 then
+              vim.notify("Not in a git repository", vim.log.levels.WARN)
+              return
+            end
+
+            local rel_path = filepath:sub(#git_root + 2)
+            vim.fn.setreg("+", rel_path)
+            vim.notify("Copied (git-relative): " .. rel_path, vim.log.levels.INFO)
+          end,
+          desc = "Copy git-relative file path",
+        },
+        ["<Leader>yR"] = {
+          function()
+            local filepath = vim.api.nvim_buf_get_name(0)
+            if filepath == "" then
+              vim.notify("Buffer has no file path", vim.log.levels.WARN)
+              return
+            end
+            filepath = vim.fn.fnamemodify(filepath, ":p")
+
+            local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+            if vim.v.shell_error ~= 0 then
+              vim.notify("Not in a git repository", vim.log.levels.WARN)
+              return
+            end
+
+            local root_name = vim.fn.fnamemodify(git_root, ":t")
+            local rel_path = filepath:sub(#git_root + 2)
+            local path_with_root = root_name .. "/" .. rel_path
+            vim.fn.setreg("+", path_with_root)
+            vim.notify("Copied (with root): " .. path_with_root, vim.log.levels.INFO)
+          end,
+          desc = "Copy git-relative path (including root)",
+        },
+
         -- tables with just a `desc` key will be registered with which-key if it's installed
         -- this is useful for naming menus
         -- ["<Leader>b"] = { desc = "Buffers" },
