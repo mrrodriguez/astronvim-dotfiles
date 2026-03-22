@@ -58,6 +58,14 @@ return {
           desc = "Close buffer from tabline",
         },
 
+        ["<Leader>rp"] = {
+          function()
+            local file = vim.fn.expand "%"
+            local cmd = string.format("python %s; echo -e '\\n[Process completed] Press enter to close'; read", file)
+            require("astrocore").toggle_term_cmd(cmd)
+          end,
+          desc = "Run current Python file",
+        },
         -- Copy file paths to clipboard
         ["<Leader>yp"] = {
           function()
@@ -123,6 +131,9 @@ return {
 
         -- setting a mapping to false will disable it
         -- ["<C-S>"] = false,
+      },
+      t = {
+        ["jk"] = { "<C-\\><C-n>", desc = "Exit terminal mode" },
       },
     },
   },
