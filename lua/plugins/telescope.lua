@@ -13,14 +13,15 @@ return {
         "--column",
         "--smart-case",
         "--hidden",
+        "--no-ignore-vcs",
         "--glob=!.git/",
       },
     },
     pickers = {
       find_files = {
         hidden = true,
-        -- Still ignore .git internals
-        find_command = { "rg", "--files", "--hidden", "--glob=!.git/" },
+        -- Still ignore .git internals but show git-ignored files
+        find_command = { "rg", "--files", "--hidden", "--no-ignore-vcs", "--glob=!.git/" },
       },
     },
   },
