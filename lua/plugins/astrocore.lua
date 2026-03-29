@@ -60,11 +60,12 @@ return {
 
         ["<Leader>rp"] = {
           function()
+            vim.cmd "silent! w" -- Save the file first
             local file = vim.fn.expand "%"
-            local cmd = string.format("python %s; echo -e '\\n[Process completed] Press enter to close'; read", file)
-            require("astrocore").toggle_term_cmd(cmd)
+            local cmd = string.format("python %s", file)
+            require("astrocore").toggle_term_cmd { cmd = cmd, direction = "float" }
           end,
-          desc = "Run current Python file",
+          desc = "Save and run current Python file",
         },
         -- Copy file paths to clipboard
         ["<Leader>yp"] = {
