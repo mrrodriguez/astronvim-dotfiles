@@ -22,6 +22,7 @@ return {
         spell = false,
         signcolumn = "yes",
         wrap = false,
+        modeline = false,
       },
       g = {
       },

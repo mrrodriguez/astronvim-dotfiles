@@ -12,8 +12,8 @@ set clipboard+=unnamedplus
 
 if exists('g:vscode')
     " Keep undo/redo lists in sync with VSCode
-    nmap silent u Cmdcall VSCodeNotify('undo')CR
-    nmap silent C-r Cmdcall VSCodeNotify('redo')CR
+    nnoremap <silent> u <Cmd>call VSCodeNotify('undo')<CR>
+    nnoremap <silent> <C-r> <Cmd>call VSCodeNotify('redo')<CR>
     " Default to using system clipboard
     set clipboard+=unnamedplus
 endif
