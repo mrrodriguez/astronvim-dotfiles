@@ -1,6 +1,11 @@
 -- don't do anything in non-vscode instances
 if not vim.g.vscode then return {} end
 
+-- mason.nvim is excluded from the plugin whitelist below, so it never runs its usual PATH
+-- setup here. Prepend its bin dir manually so already mason-installed tools (e.g. the
+-- `tree-sitter` CLI) are still found, avoiding a spurious "CLI is required" warning.
+vim.env.PATH = vim.fn.stdpath "data" .. "/mason/bin:" .. vim.env.PATH
+
 -- a list of known working plugins with vscode-neovim, update with your own plugins
 local plugins = {
   "lazy.nvim",

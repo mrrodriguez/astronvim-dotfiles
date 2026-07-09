@@ -1,3 +1,13 @@
+-- Insert the next typed character repeated `count` times (count comes from a numeric prefix,
+-- e.g. `40s-` draws a 40-dash divider). `before`/`after` mirrors vim's `i`/`a`.
+local function repeat_char(before_or_after)
+  return function()
+    local count = vim.v.count1
+    local char = vim.fn.nr2char(vim.fn.getchar())
+    vim.cmd.normal { before_or_after .. string.rep(char, count), bang = true }
+  end
+end
+
 ---@type LazySpec
 return {
   "AstroNvim/astrocore",
@@ -26,7 +36,11 @@ return {
         number = true,
         spell = false,
         signcolumn = "yes",
-        wrap = false,
+        wrap = true,
+        linebreak = true,
+        breakindent = true,
+        textwidth = 100,
+        colorcolumn = "100",
         modeline = false,
       },
       g = {
@@ -34,6 +48,15 @@ return {
     },
     mappings = {
       n = {
+        -- Keep undo/redo in sync with VSCode when running under the vscode-neovim extension
+        ["u"] = vim.g.vscode
+            and { function() vim.fn.VSCodeNotify "undo" end, desc = "VSCode undo", silent = true }
+          or nil,
+        ["<C-r>"] = vim.g.vscode
+            and { function() vim.fn.VSCodeNotify "redo" end, desc = "VSCode redo", silent = true }
+          or nil,
+        ["s"] = { repeat_char "i", desc = "Insert N repeated chars before cursor" },
+        ["S"] = { repeat_char "a", desc = "Insert N repeated chars after cursor" },
         ["]b"] = { function() require("astrocore.buffer").nav(vim.v.count1) end, desc = "Next buffer" },
         ["[b"] = { function() require("astrocore.buffer").nav(-vim.v.count1) end, desc = "Previous buffer" },
         ["<Leader>bd"] = {
