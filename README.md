@@ -38,6 +38,9 @@ Contents of `vimrc.vim` and current status:
   this block was redundant (see above) and was dropped, not ported.
 
 **Flag for later:** decide whether to delete `vimrc.vim` / `lua/user/init.lua` outright, or wire it
-back in (e.g. call `vim.cmd.runtime "vimrc.vim"` from `lua/polish.lua`) if some other tool turns out
 to source it directly and there's a reason to keep it shared across editors. IdeaVim uses a separate
 config (`~/ideavim-dotfiles`), so it is not a consumer of this file.
+
+## Known Issues / Fixes
+
+- **Telescope & Syntax Highlighting Breaking**: Invoking Hydra (e.g. `<Space>w`) caused Neovim's `eventignore` to get permanently stuck on `"all"` due to a bug in the original `anuvyklack/hydra.nvim` (setting the string option to `nil` fails in modern Neovim). This prevented Autocommands (`BufEnter`, `FileType`) from firing, breaking Treesitter coloring on window resizes and Telescope's prompt initialization. Fixed by migrating to the maintained `nvimtools/hydra.nvim` fork in `lua/plugins/hydra.lua`.
