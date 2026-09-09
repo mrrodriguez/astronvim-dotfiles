@@ -1,4 +1,4 @@
-local clara_root = vim.env.CLARA_HOME_EXPLORER
+local clara_root = vim.env.CLARA_RULES_EXPLORER_HOME
 
 local plugins = {
   "Olical/conjure",
@@ -12,11 +12,21 @@ if clara_root then
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "clojure",
         callback = function(args)
-          vim.keymap.set("n", "gp", "<Cmd>ClaraExplorerNavigateProducer<CR>", { buffer = args.buf, desc = "Navigate to Producer (Clara)" })
-          vim.keymap.set("n", "gc", "<Cmd>ClaraExplorerNavigateConsumer<CR>", { buffer = args.buf, desc = "Navigate to Consumer (Clara)" })
+          vim.keymap.set(
+            "n",
+            "gp",
+            "<Cmd>ClaraExplorerNavigateProducer<CR>",
+            { buffer = args.buf, desc = "Navigate to Producer (Clara)" }
+          )
+          vim.keymap.set(
+            "n",
+            "gc",
+            "<Cmd>ClaraExplorerNavigateConsumer<CR>",
+            { buffer = args.buf, desc = "Navigate to Consumer (Clara)" }
+          )
         end,
       })
-    end
+    end,
   }
 else
   vim.notify("CLARA_HOME_EXPLORER is not set — clara-explorer not loaded", vim.log.levels.WARN)
