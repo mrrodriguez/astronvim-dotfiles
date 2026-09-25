@@ -29,7 +29,7 @@ if clara_root then
     end,
   }
 else
-  vim.notify("CLARA_HOME_EXPLORER is not set — clara-explorer not loaded", vim.log.levels.WARN)
+  vim.notify("CLARA_RULES_EXPLORER_HOME is not set — clara-explorer not loaded", vim.log.levels.WARN)
 end
 
 return plugins
