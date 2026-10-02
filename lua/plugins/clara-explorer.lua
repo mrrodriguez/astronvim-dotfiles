@@ -1,7 +1,12 @@
 local clara_root = vim.env.CLARA_RULES_EXPLORER_HOME
 
 local plugins = {
-  "Olical/conjure",
+  {
+    "Olical/conjure",
+    init = function()
+      vim.g["conjure#client#clojure#nrepl#connection#auto_repl#enabled"] = false
+    end,
+  },
   { "nvim-treesitter/nvim-treesitter", opts = { ensure_installed = { "clojure" } } },
 }
 
